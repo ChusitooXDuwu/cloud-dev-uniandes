@@ -62,7 +62,7 @@ jobs:
         run: |
           psql -h localhost -U anb_user -d anb_db_test -c "GRANT ALL ON SCHEMA public TO anb_user;"
       
-      - name: Create test data directory
+      - name: Create storage directories
         run: |
           mkdir -p tests/test_data
           mkdir -p storage/uploads
@@ -79,5 +79,20 @@ jobs:
           ACCESS_TOKEN_EXPIRE_MINUTES: 60
         run: |
           pytest -v --cov=app --cov-report=term-missing --cov-report=html --cov-report=xml --cov-fail-under=65
-
-          "
+      
+      - name: Display coverage summary
+        if: always()
+        run: |
+          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          coverage report >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+      
+      - name: Upload coverage HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov/
+          retention-days: 30

@@ -6,7 +6,9 @@ Dentro de este plan de pruebas se describirá el desarrollo y los resultados obt
 Determinar la capacidad máxima que soportan diferentes componentes del sistema por medio de pruebas de carga. 
 ### Objetivos específicos
 - Generar pruebas de capacidad a la capa Web del proyecto detectando así su curva de usuarios, RPS sostenido y cuellos de botella.
-- Analizar el rendimiento de la capa worker al determinar la capacidad de tamaño de videos que soporta, sus puntos de saturación y cuellos de botella. 
+- Analizar el rendimiento de la capa worker al determinar la capacidad de tamaño de videos que soporta, sus puntos de saturación y cuellos de botella.
+## Configuración del sistema
+Para realizar las pruebas a esta aplicación, se utilizará una maquina con 16GB de RAM y 6 núcleos. Con esto, se tendrá una idea del desempeño del sistema de forma local con especificaciones medianas. Más adelante al hacer uso de instancias de AWS, los resultados que se presentan dentro de estas pruebas pueden no ser iguales debido a las especificaciones. 
 ## Pruebas
 ### Escenario 1-Capa Web:
 #### Descripción
@@ -20,6 +22,7 @@ Para definir que los resultados son aceptables se define que la capacidad máxim
 - Errores menores o iguales al 5%
 - Ningún reset o timeout anómalo, ni throttling del almacenamiento.
 #### Herramientas
+Como herramientas para el desarrollo de estas pruebas se utilizó locust, Prometheus + Grafana y APM. 
 #### Métricas 
 #### Resultados
 

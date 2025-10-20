@@ -327,3 +327,7 @@ Como fue dicho en el readme principal para levantar
 ```docker compose ps```
 
 ```docker compose logs -f app```
+
+### SonarQube 
+
+![alt text](image.png)

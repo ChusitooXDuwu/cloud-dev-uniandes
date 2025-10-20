@@ -8,6 +8,7 @@ API REST completa para la plataforma ANB Rising Stars Showcase - Sistema de carg
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688)](https://fastapi.tiangolo.com/)
 
 ---
+[Video sustentacion](https://uniandes-my.sharepoint.com/:v:/g/personal/ma_angulom1_uniandes_edu_co/EUhPYPMCi5xIv7JGx64JxkABr23pE_VLKCyAn_p0FLIZug?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=ZePOFZ)
 
 ## 📋 Tabla de Contenidos
 

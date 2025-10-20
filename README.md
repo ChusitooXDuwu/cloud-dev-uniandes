@@ -999,5 +999,5 @@ Si llegaste hasta aquí y todos los pasos funcionaron:
 
 ---
 
-**⭐ ¡Proyecto completado exitosamente con 30/30 tests pasando y 73% de cobertura!**
+**⭐ ¡Proyecto completado exitosamente con 30/30 tests pasando y 70% de cobertura!**
 

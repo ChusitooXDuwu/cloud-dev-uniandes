@@ -27,7 +27,13 @@ Para definir que los resultados son aceptables se define que la capacidad máxim
 Como herramientas para el desarrollo de estas pruebas se utilizó locust, Prometheus + Grafana y APM. Los archivo locust utilizados para estas pruebas se identifican como `locust_web.py` y el nombre de la prueba dentro de la carpeta pruebas_capa_web. 
 #### Resultados
 A partir de la ejecución de pruebas de capa web, se pudieron obtener los siguientes resultados:
-
+A partir de la ejecución de pruebas de capa web, se pudieron obtener los siguientes resultados:
+##### Smoke:
+En cuanto a la prueba smoke, esta se realizó con 5 usuarios en tiempos de 1 minuto. Como se puede ver en la imagen, esto no genero ningún fallo en ninguna de las peticiones permitiendo ver así como el proceso fue exitoso. Adicionalmente, al revisar los resultados de las gráficas se puede ver que el RPS oscila la mayoría del tiempo entre 3 y 4. El tiempo de respuesta del percentil 95 se encuentra sobre los 3.25 segundos y el número de usuarios muestra como se cumplió con que los 5 usuarios llegaran, se mantuvieran por un periodo de tiempo y luego desaparecieran. Dentro de la carpeta de resultados se incluyen l
+##### Ramp:
+Para estas pruebas se aumentó gradualmente la carga de usuarios en el sistema. Se pudo observar que al llegar a 500 se detecta un 3% de errores. SIn embargo, con 600 usuarios el sistema falla totalmente y tiene errores de más del 90%. Es por esto que el punto estable de la aplicación es hasta 500 usuarios. Esto se puede ver en las gráficas de resultados anexas dentro de la carpeta de resultados. 
+##### Sostenida:
+Finalmente, para esta prueba se utilizó la información de que la aplicación soporta un máximo de 500 usuarios y se realizó una prueba sostenida por 5 minutos con el 80% de esta carga. Siendo así, se pudo ver que esto cumple limites de error al tener solo el 4% de fallas en el sistema, no se presentan problemas de resets o timeouts y se reporta un RPS agregado de 118.9, lo que significa que se pueden procesar esa cantidad de solicitudes por segundo. 
 
 ### Escenario 2-Capa Worker:
 #### Descripción
@@ -37,3 +43,13 @@ Para determinar si la prueba fue exitosa o no se utiliza la capacidad nominal qu
 #### Herramientas
 Para estas pruebas se utilizaron scripts de python en donde se realiza el proceso de mandar información directamente al worker y guardar las métricas de tiempos.  
 #### Resultados
+A partir de los resultados de las pruebas se puede ver los siguientes resultados de la prueba de saturación. En general, los resultados muestran que se logra procesar una cantidad adecuada de videos dentro de celery en un tiempo pequeño. A continuación, se presenta una tabla con los resultados que están almacenados en un csv dentro de la carpeta de resultados. 
+| video_size_mb | concurrency | total_videos | elapsed_seconds | throughput_videos_per_min | start_time                  | end_time                    |
+|----------------|--------------|---------------|-----------------|----------------------------|------------------------------|------------------------------|
+| 50             | 1            | 10            | 28.2            | 10.64                      | 2025-10-19 23:24:14.699008   | 2025-10-19 23:24:42.903723   |
+| 50             | 2            | 10            | 50.9            | 5.89                       | 2025-10-19 23:24:42.904455   | 2025-10-19 23:25:33.807365   |
+| 50             | 4            | 10            | 48.78           | 6.15                       | 2025-10-19 23:25:33.808469   | 2025-10-19 23:26:22.589445   |
+| 100            | 1            | 10            | 50.99           | 5.88                       | 2025-10-19 23:26:22.590090   | 2025-10-19 23:27:13.581750   |
+| 100            | 2            | 10            | 50.92           | 5.89                       | 2025-10-19 23:27:13.582656   | 2025-10-19 23:28:04.507364   |
+| 100            | 4            | 10            | 48.92           | 6.13                       | 2025-10-19 23:28:04.508417   | 2025-10-19 23:28:53.425889   |
+

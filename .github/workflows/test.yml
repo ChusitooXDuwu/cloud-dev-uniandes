@@ -1,0 +1,83 @@
+name: ANB API - Tests y Cobertura
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test ANB API with Coverage
+    
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: anb_user
+          POSTGRES_PASSWORD: anb_pass
+          POSTGRES_DB: anb_db_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-cov coverage
+      
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U anb_user; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+      
+      - name: Setup test database
+        env:
+          PGPASSWORD: anb_pass
+        run: |
+          psql -h localhost -U anb_user -d anb_db_test -c "GRANT ALL ON SCHEMA public TO anb_user;"
+      
+      - name: Create test data directory
+        run: |
+          mkdir -p tests/test_data
+          mkdir -p storage/uploads
+          mkdir -p storage/processed
+          mkdir -p storage/temp
+      
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: postgresql+asyncpg://anb_user:anb_pass@localhost:5432/anb_db_test
+          STORAGE_PATH: ./storage
+          MAX_FILE_SIZE_MB: 100
+          SECRET_KEY: test-secret-key-for-github-actions-at-least-32-chars
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 60
+        run: |
+          pytest -v --cov=app --cov-report=term-missing --cov-report=html --cov-report=xml --cov-fail-under=65
+
+          "

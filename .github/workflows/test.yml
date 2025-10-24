@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,7 +43,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          ffmpeg -version
       
       - name: Install dependencies
         run: |
@@ -64,10 +65,7 @@ jobs:
       
       - name: Create storage directories
         run: |
-          mkdir -p tests/test_data
-          mkdir -p storage/uploads
-          mkdir -p storage/processed
-          mkdir -p storage/temp
+          mkdir -p tests/test_data storage/{uploads,processed,temp}
       
       - name: Run tests with coverage
         env:
@@ -78,7 +76,13 @@ jobs:
           ALGORITHM: HS256
           ACCESS_TOKEN_EXPIRE_MINUTES: 60
         run: |
-          pytest -v --cov=app --cov-report=term-missing --cov-report=html --cov-report=xml --cov-fail-under=65
+          pytest -v \
+            --cov=app \
+            --cov-report=term-missing \
+            --cov-report=html \
+            --cov-report=xml:coverage.xml \
+            --junitxml=test-results.xml \
+            --cov-fail-under=65
       
       - name: Display coverage summary
         if: always()
@@ -89,10 +93,36 @@ jobs:
           coverage report >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
       
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >-
+            -Dsonar.projectKey=marialeang2_cloud-dev-uniandes
+            -Dsonar.organization=marialeang2
+            -Dsonar.projectName="ANB Rising Stars API"
+            -Dsonar.sources=app
+            -Dsonar.tests=tests
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.python.xunit.reportPath=test-results.xml
+            -Dsonar.python.version=3.11
+            -Dsonar.exclusions=**/__pycache__/**,**/migrations/**,**/*.pyc,**/venv/**,**/storage/**,**/.pytest_cache/**
+            -Dsonar.sourceEncoding=UTF-8
+      
       - name: Upload coverage HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: htmlcov/
+          retention-days: 30
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.xml
           retention-days: 30

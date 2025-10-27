@@ -52,4 +52,4 @@ Pese a este, se reporta una mejora frente la iteración pasada en donde no se re
 ![sonar1](images/sonar1.png)
 
 Para futuras entregas se propone seguir trabajando en reducir los issues existentes dandole atención principalmente a la comfiabilidad. Sin embargo, se muestra la gráfica a continuación, para mostrar el avance del código en cuanto a su desarrollo apropiado y seguro en donde solo 1 archivo presenta problemas por resolver. Esto deja ver como los cambios y mejoras introducidos ayudan a que se tenga un nivel aceptable y permiten que lo que siga sean mejoras de pcoo consumo de tiempo. 
-![sonar2](images/sonar2.png.png)
+![sonar2](images/sonar2.png)

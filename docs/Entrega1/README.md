@@ -330,4 +330,4 @@ Como fue dicho en el readme principal para levantar
 
 ### SonarQube 
 
-<img width="1558" height="803" alt="image" src="https://github.com/user-attachments/assets/e66f986e-70ec-4de6-bf14-4868509587bd" />
+![SonarQube](image.png)

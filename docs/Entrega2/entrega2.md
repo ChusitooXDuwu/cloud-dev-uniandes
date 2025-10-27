@@ -16,7 +16,7 @@ A continuación se presenta el diagrama de componentes actualizado.
 
 ![diagrama de componentes](images/arquitectura.png)
 
-Como se puede ver dentro del diagrama, se tiene la configuración de una VPC en donde se alojan las máquinas previamente descritas. Es de resaltar que por motivos de seguridad, la única maquina expuesta dentro de una red pública corresponde al Web Server. Las demás instancias se encuentran conectadas dentro de una subred privada de forma que no se puede acceder a ellas directamente. 
+Como se puede ver dentro del diagrama, se tiene la configuración de una VPC en donde se alojan las máquinas previamente descritas. Es de resaltar que por motivos de seguridad, la única maquina expuesta dentro de una red pública corresponde al Web Server. Las demás instancias se encuentran conectadas dentro de una subred privada de forma que no se puede acceder a ellas directamente, para poder conectarse a ellas se utilizó un rol IAM. 
 
 Previamente se había generado un contenedor de Docker que tenía todos los servicios incluídos dentro de él. Como se modificó la estructura al alojar los diferentes servicios en máquinas separadas, se realizaron modificaciones tal que se permite la separación de servicios en contenedores más pequeños como se puede observar dentro del siguiente diagrama. 
 ![docker_diag](images/docker_diag.png)
@@ -37,7 +37,19 @@ En este se puede ver la conexión entre todas las máquinas de la red, su protoc
 ### Reglas de seguridad
 Finalmente, se detallarán las reglas de seguridad configuradas dentro de esta entrega para permitir un tráfico adecuado y controlado de peticiones entre las máquinas aprovisionadas. 
 
+| **Grupo de Seguridad** | **Tipo** | **Protocolo**                  | **Puertos**        | **Instancias** |
+|------------------------|----------|--------------------------------|--------------------|----------------|
+| bd_firewall            | Inbound  | TCP (PostgreSQL) TCP (SSH) | 5432 22    | Base de datos  |
+| Worker                 | Inbound  | TCP (SSH) TCP TCP TCP          | 22 15672 6379 5672 | Worker server  |
+| anb_nfs                | Inbound  | TCP                            | 2049               | Servidor NFS   |
+| Web Security Group     | Inbound  | TCP SSH HTTP                   | 8000 22 80         | Servidor web   |
+
+Como se puede ver, se tienen diferentes reglas que regulan el flujo de información entre las máquinas. Es de resaltar que la mayoría permite la conexión SSH con el fin de poder editarlas y conectarse a ellas. Así mismo se resalta como la base de datos permite el tráfico relacionado al puerto en el que se ejecuta PostgreSQL pero limita la entrada de otra información. Por el lado del worker ese permite el tráfico en los puertos relacionados con Celery, RabbitMQ y Redis lo que es necesario para su funcionamiento óptimo, el NFS permite tráfico sobre el puerto 2049 con el cuál trabaja, y, finalmente el servidor web hace uso del puerto 8000 para FastAPI y los otros 2 para permitir conexiones remotas al servidor. 
 
 ## SonarQube
-A continuación se presentan las métricas actuales de 
+A continuación se presentan las métricas actuales obtenidas dentro de SonarQube. Como se puede ver, se alcanza un nivel A en cuanto a seguridad, mantenibilidad, y hotspots. Como futuros aspectos a seguir mejorando se encuentra la reducción de duplicación de código la cual alcanza un 7.1%, la cobertura que se encuentra en 69.4% y el nivel de confiabilidad el cual es C en este momento. 
+Pese a este, se reporta una mejora frente la iteración pasada en donde no se reportaba la cobertura apropiadamente, se tenía un nivel E de seguridad con 2 issues abiertos y se contaba con un número mayor de issues de mantenibilidad.
 ![sonar1](images/sonar1.png)
+
+Para futuras entregas se propone seguir trabajando en reducir los issues existentes dandole atención principalmente a la comfiabilidad. Sin embargo, se muestra la gráfica a continuación, para mostrar el avance del código en cuanto a su desarrollo apropiado y seguro en donde solo 1 archivo presenta problemas por resolver. Esto deja ver como los cambios y mejoras introducidos ayudan a que se tenga un nivel aceptable y permiten que lo que siga sean mejoras de pcoo consumo de tiempo. 
+![sonar2](images/sonar2.png.png)

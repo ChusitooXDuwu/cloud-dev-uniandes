@@ -1,5 +1,15 @@
 # 🏀 ANB Rising Stars API REST
+# Integrantes
+- Wyo Hann Chu Mendez
+- Maria Alejandra Angulo
+- Pablo Pedreros Diaz
+- Laura Murcia
+# Entrega 1
+[Video sustentacion](https://uniandes-my.sharepoint.com/:v:/g/personal/ma_angulom1_uniandes_edu_co/EUhPYPMCi5xIv7JGx64JxkABr23pE_VLKCyAn_p0FLIZug?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=ZePOFZ)
+# Entrega 2
+[Documentación](https://github.com/cloud-uniandes/cloud-dev-uniandes/blob/main/docs/Entrega2/entrega2.md)
 
+---
 API REST completa para la plataforma ANB Rising Stars Showcase - Sistema de carga de videos y votación para jugadores de baloncesto.
 
 [![Tests](https://img.shields.io/badge/tests-34%2F34%20passing-brightgreen)](tests/)
@@ -8,7 +18,6 @@ API REST completa para la plataforma ANB Rising Stars Showcase - Sistema de carg
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688)](https://fastapi.tiangolo.com/)
 
 ---
-[Video sustentacion](https://uniandes-my.sharepoint.com/:v:/g/personal/ma_angulom1_uniandes_edu_co/EUhPYPMCi5xIv7JGx64JxkABr23pE_VLKCyAn_p0FLIZug?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=ZePOFZ)
 
 ## 📋 Tabla de Contenidos
 
